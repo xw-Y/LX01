@@ -1,0 +1,71 @@
+/*22.在查询编辑器中执行以下脚本在Mysql8创建数据库Works.*/
+DROP DATABASE IF EXISTS Works;
+CREATE DATABASE Works DEFAULT CHARSET=GBK;
+/*23.在上面脚本后面，输入以下代码在Works数据库中创建Userlnfo表。*/
+USE Works;
+CREATE TABLE UserInfo
+(
+UserName nvarchar(50) Primary key,
+Password nvarchar(50) not null,
+QQ nvarchar(12),
+Email nvarchar(50),
+Type nchar(10) not null,
+UserImg nvarchar(250)
+);
+
+CREATE TABLE Activity
+(
+ActivityID int(4) Primary KEY auto_increment,
+ActivitName nvarchar(125) not NULL,
+EndTime datetime(6) not null,
+ActivityPicture nvarchar(250) not NULL,
+ActivityIntroduction nvarchar(8000),
+Summary nvarchar (250),
+ActivityVerify nchar(10) not null DEFAULT '待审核',
+ActivityStatus nchar(10),
+UserName nvarchar(50) not null
+);
+
+CREATE TABLE WorkInfo
+(
+WorkID int(4) Primary KEY,
+WorkName nvarchar(50) not NULL,
+WorkPicture nvarchar(250) not null,
+UploadTime datetime(6) not null,
+WorkIntroduction nvarchar(8000),
+WorkVerify nchar(10) not NULL DEFAULT '待审核',
+UserName nvarchar(50) not null,
+ActivityName nvarchar(125),
+Recommend nchar(2) not null,
+RecommendTime dateTime(6)
+);
+
+CREATE TABLE Commeut
+(
+CommentID int(4) PRIMARY KEY auto_increment,
+WordID int(4) not null,
+WordName nvarchar(50) not null,
+UserName nvarchar(50) not null,
+CommentContent nvarchar(8000) not null,
+CommentTime dateTime(6) not null
+);
+
+CREATE TABLE Image
+(
+ImgID int(4) PRIMARY KEY auto_increment,
+ImgUrl nvarchar(50) not NULL,
+ImgText nvarchar(50) not NULL,
+ImgLink nvarchar(100) not NULL,
+ImgAlt nvarchar(50) not NULL
+);
+
+ALTER TABLE WorkInfo
+ADD FOREIGN KEY(UserName) REFERENCES UserInfo(UserName);
+
+ALTER TABLE Commeut
+ADD FOREIGN KEY(UserName) REFERENCES WorkInfo(UserName);
+ALTER TABLE Commeut
+ADD FOREIGN KEY(UserName) REFERENCES UserInfo(UserName);
+
+ALTER TABLE Activity
+ADD FOREIGN KEY(UserName) REFERENCES UserInfo(UserName);
